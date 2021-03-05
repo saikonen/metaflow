@@ -18,6 +18,7 @@ from .cache_action import CacheAction,\
                           import_action_class
 
 from .cache_store import CacheStore,\
+                         CacheFullException,\
                          key_filename,\
                          is_safely_readable
 
@@ -115,9 +116,13 @@ class Worker(object):
         self.prio = request['priority']
         self.filestore = filestore
         self.proc = None
-        self.tempdir = self.filestore.open_tempdir(request['idempotency_token'],
-                                                   request['action'],
-                                                   request['stream_key'])
+        try:
+            self.tempdir = self.filestore.open_tempdir(request['idempotency_token'],
+                                                    request['action'],
+                                                    request['stream_key'])
+        except CacheFullException:
+            self.tempdir = None
+
         if self.tempdir is None:
             self.echo("Store couldn't create a temp directory. "\
                       "WORKER NOT STARTED.")
