@@ -116,12 +116,9 @@ class Worker(object):
         self.prio = request['priority']
         self.filestore = filestore
         self.proc = None
-        try:
-            self.tempdir = self.filestore.open_tempdir(request['idempotency_token'],
-                                                    request['action'],
-                                                    request['stream_key'])
-        except CacheFullException:
-            self.tempdir = None
+        self.tempdir = self.filestore.open_tempdir(request['idempotency_token'],
+                                                   request['action'],
+                                                   request['stream_key'])
 
         if self.tempdir is None:
             self.echo("Store couldn't create a temp directory. "\
@@ -238,10 +235,14 @@ class Scheduler(object):
         for request in chain(queued_request(self.hi_prio_requests),
                              queued_request(self.lo_prio_requests)):
 
-            worker = Worker(request, self.filestore)
-            if worker.tempdir:
-                worker.start()
-                return worker
+            try:
+                worker = Worker(request, self.filestore)
+                if worker.tempdir:
+                    worker.start()
+                    return worker
+            except CacheFullException:
+                echo("Cache storage is full, worker failed to start!")
+                return None
 
     def loop(self):
 
