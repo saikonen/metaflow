@@ -2,7 +2,7 @@ import time
 import asyncio
 from subprocess import PIPE
 
-from .cache_client import CacheClient, CacheServerUnreachable
+from .cache_client import CacheClient, CacheServerUnreachable, CacheClientTimeout
 
 WAIT_FREQUENCY = 0.2
 HEARTBEAT_FREQUENCY = 1
