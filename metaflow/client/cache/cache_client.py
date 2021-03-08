@@ -15,6 +15,10 @@ class CacheServerUnreachable(Exception):
 class CacheClientTimeout(Exception):
     pass
 
+
+class CacheStreamCorrupted(Exception):
+    pass
+
 class CacheFuture(object):
 
     def __init__(self, keys, stream_key, client, action_cls, root):
@@ -189,7 +193,7 @@ class CacheClient(object):
         """
         raise NotImplementedError
 
-    def check():
+    def check(self):
         """
         Call and wait on the Check action to ensure that the server is
         running.
