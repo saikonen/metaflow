@@ -16,7 +16,7 @@ class CacheAsyncClient(CacheClient):
         asyncio.create_task(self._heartbeat())
 
     async def check(self):
-        ret = await self.Check()
+        ret = await self.Check()  # pylint: disable=no-member
         await ret.wait()
         ret.get()
 
