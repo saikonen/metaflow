@@ -89,9 +89,9 @@ class MessageReader(object):
                             try:
                                 yield json.loads(line)
                             except:
-                                raise
                                 uni = line.decode('utf-8', errors='replace')
                                 echo("WARNING: Corrupted message: %s" % uni)
+                                raise
                         else:
                             # return the last partial line back to the buffer
                             new_buf.write(line)
@@ -141,7 +141,7 @@ class Worker(object):
             }
             json.dump(request, f)
 
-        cmd, env = subprocess_cmd_and_env('cache_worker')
+        cmd, _ = subprocess_cmd_and_env('cache_worker')
         cmdline = cmd + [\
                    '--request-file', 'request.json',\
                    self.request['action']\
