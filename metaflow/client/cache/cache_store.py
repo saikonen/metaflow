@@ -185,7 +185,7 @@ class CacheStore(object):
                         f.close()
                         try:
                             os.symlink(dst, src)
-                        except Exception as ex:
+                        except OSError as ex:
                             # two actions may be streaming the same object
                             # simultaneously. We don't consider an existing
                             # symlink (errno 17) to be an error.
