@@ -238,6 +238,7 @@ class Scheduler(object):
             try:
                 worker = Worker(request, self.filestore)
                 if worker.tempdir:
+                    # NOTE: Cleanup this logic.
                     worker.start()
                     return worker
             except CacheFullException:

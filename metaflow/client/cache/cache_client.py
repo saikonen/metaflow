@@ -44,6 +44,8 @@ class CacheFuture(object):
                                 timeout)
 
     def get(self):
+        # NOTE: how to tie cachefuture together with cache_server stderr/stdout streams.
+        # NOTE: using idempotency_token so we only get messages related to this cachefuture?
         def _read(path):
             with open(path, 'rb') as f:
                 return f.read()
@@ -163,6 +165,7 @@ class CacheClient(object):
         return self.send_request(json.dumps(req).encode('utf-8') + b'\n')
 
     def _action(self, cls):
+        # NOTE: Can this be tied to an idempotency_token for streaming errors?
 
         def _call(*args, **kwargs):
             msg, keys, stream_key, disposable_keys =\

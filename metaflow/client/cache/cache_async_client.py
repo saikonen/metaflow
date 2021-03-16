@@ -9,6 +9,7 @@ HEARTBEAT_FREQUENCY = 1
 
 class CacheAsyncClient(CacheClient):
 
+    # NOTE: add poller or something for server heartbeat checks. restart subprocess if down.
     async def start_server(self, cmdline, env):
         self._proc = await asyncio.create_subprocess_exec(*cmdline,
                                                           env=env,
