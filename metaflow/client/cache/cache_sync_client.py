@@ -1,7 +1,7 @@
 import time
 from subprocess import Popen, PIPE
 
-from .cache_client import CacheClient, CacheServerUnreachable
+from .cache_client import CacheClient, CacheServerUnreachable, CacheClientTimeout
 
 WAIT_FREQUENCY = 0.2
 HEARTBEAT_FREQUENCY = 1
@@ -13,12 +13,12 @@ class CacheSyncClient(CacheClient):
         self._prev_heartbeat = 0
 
     def check(self):
-        ret = self.Check()
+        ret = self.Check()  # pylint: disable=no-member
         ret.wait()
         ret.get()
 
     def stop_server(self):
-        if self._isalive:
+        if self._is_alive:
             self._is_alive = False
             self._proc.terminate()
             self._proc.wait()
