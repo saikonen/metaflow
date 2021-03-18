@@ -185,6 +185,7 @@ class CacheClient(object):
                                  message=msg,
                                  disposable_keys=disposable_keys)
 
+            # NOTE: Why is request_and_return speced to take a list of requests, when self._send
             return self.request_and_return([req] if req else [], future)
 
         return _call
