@@ -22,3 +22,5 @@ R/.Rbuildignore
 
 # Pycharm
 .idea
+.project
+.pydevproject
